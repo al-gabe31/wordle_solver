@@ -93,62 +93,36 @@ def get_color_feedback(input_word:str, compare_word:str) -> str:
     input_dict = {}
     compare_dict = {}
 
-    for index, letter in enumerate(input_word):
+    for letter in input_word:
         if letter not in input_dict:
-            input_dict[letter] = []
-
-        input_dict[letter].append(index)
-    for index, letter in enumerate(compare_word):
+            input_dict[letter] = letter_bits(input_word, letter)
+    for letter in compare_word:
         if letter not in compare_dict:
-            compare_dict[letter] = []
+            compare_dict[letter] = letter_bits(compare_word, letter)
 
-        compare_dict[letter].append(index)
+    for letter in input_dict.keys():
+        #* checking for GREENS
+        if letter in compare_dict:
+            and_result = bitwise_and(input_dict[letter], compare_dict[letter])
+            green_bits = bitwise_and(input_dict[letter], and_result)
 
+            for index, bit in enumerate(green_bits):
+                if bit == 1:
+                    color_feedback[index] = 'G'
 
+        #* checking for yellows
+        if letter in compare_dict and sum(input_dict[letter]) <= sum(compare_dict[letter]):
+            xor_result = bitwise_xor(input_dict[letter], compare_dict[letter])
+            yellow_bits = bitwise_and(input_dict[letter], xor_result)
 
-    #* checking each letter in input_dict and getting its corresponding color feedback
-    for key in input_dict.keys():
-        print(f'CURR KEY = {key}')
-        for i in range(len(input_dict[key])):
-            print(f'input_dict: {input_dict}')
-            print(f'compare_dict: {compare_dict}')
-
-            curr_index = input_dict[key][0]
-
-            if key not in compare_dict or len(compare_dict[key]) == 0:
-                color_feedback[curr_index] = 'B' #! letter not found in compare word
-                input_dict[key] = input_dict[key][1:] #* removing leading index
-                print(f'color_feedback {color_feedback}\n')
-                continue
-
-            compare_index = -1 if len(compare_dict[key]) == 0 else compare_dict[key][0]
-
-            if curr_index != compare_index:
-                color_feedback[curr_index] = 'Y' #! letter in wrong spot
-                input_dict[key] = input_dict[key][1:] #* removing leading index
-                compare_dict[key] = compare_dict[key][1:] #* removing leading index
-                print(f'color_feedback {color_feedback}\n')
-                continue
-
-            if curr_index == compare_index:
-                color_feedback[curr_index] = 'G' #! letter in correct spot
-                input_dict[key] = input_dict[key][1:] #* removing leading index
-                compare_dict[key] = compare_dict[key][1:] #* removing leading index
-                print(f'color_feedback {color_feedback}\n')
-                continue
-
-    #! #4: checking that all spots in color_feedback were populated
-    if 'X' in ''.join(color_feedback):
-        raise ValueError(f'ERROR: color_feedback {"".join(color_feedback)} cannot have unpopulated spots')
+            for index, bit in enumerate(yellow_bits):
+                if bit == 1:
+                    color_feedback[index] = 'Y'
 
     return ''.join(color_feedback)
 
 if __name__ == '__main__':
     try:
-        input_word = 'llama'
-        compare_word = 'allot'
-        color_feedback = get_color_feedback(input_word, compare_word)
-
-        print(color_feedback)
+        print(get_color_feedback('llama', 'allot')) #* YGBBB [FAIL] should be YGYBB
     except ValueError as e:
         print(e)

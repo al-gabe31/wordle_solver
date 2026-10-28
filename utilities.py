@@ -110,10 +110,18 @@ def get_color_feedback(input_word:str, compare_word:str) -> str:
                 if bit == 1:
                     color_feedback[index] = 'G'
 
-        #* checking for yellows
-        if letter in compare_dict and sum(input_dict[letter]) <= sum(compare_dict[letter]):
+        #* checking for YELLOWS
+        if letter in compare_dict:
+            unclaimed_copies = sum(compare_dict[letter]) - sum(bitwise_and(input_dict[letter], compare_dict[letter])) #* the number of copies for a letter in compare_dict that have yet to be claimed by a green match
             xor_result = bitwise_xor(input_dict[letter], compare_dict[letter])
             yellow_bits = bitwise_and(input_dict[letter], xor_result)
+
+            #! going throuch each yellow bit and determining if there are enough copies left to keep it
+            for bit_index, bit in enumerate(yellow_bits):
+                if bit == 1 and unclaimed_copies > 0: #* there are copies left
+                    unclaimed_copies -= 1
+                elif bit == 1 and unclaimed_copies <= 0: #* no copies left
+                    yellow_bits[bit_index] = 0
 
             for index, bit in enumerate(yellow_bits):
                 if bit == 1:

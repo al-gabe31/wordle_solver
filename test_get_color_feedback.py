@@ -13,6 +13,13 @@ test_cases = [
     (['llama', 'allot'], 'YGYBB'),
     (['tatty', 'taste'], 'GGBGB'),
     (['banal', 'canal'], 'BGGGG'),
+    (['train', 'roast'], 'YYGBB'),
+    (['green', 'gears'], 'GYYBB'),
+    (['eerie', 'alley'], 'YBBBB'),
+    (['teeth', 'tweet'], 'GYGYB'),
+    (['sssss', 'sissy'], 'GBGGB'),
+    (['tally', 'allot'], 'YYGYB'),
+    (['eerie', 'cycle'], 'BBBBG'),
 ]
 
 @pytest.mark.parametrize("inputs, expected", test_cases)

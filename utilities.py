@@ -129,8 +129,31 @@ def get_color_feedback(input_word:str, compare_word:str) -> str:
 
     return ''.join(color_feedback)
 
+def get_color_dict() -> dict:
+    color_combinations = {}
+
+    for i in range(pow(3,5)):
+        color_nums = [(i // pow(3,position)) % 3 for position in range(5)]
+        color_codes = []
+
+        for num in color_nums:
+            if num == 0:
+                color_codes.append('B')
+            elif num == 1:
+                color_codes.append('Y')
+            elif num == 2:
+                color_codes.append('G')
+
+        if ''.join(color_codes) not in color_combinations:
+            color_combinations[''.join(color_codes)] = 0
+
+    return color_combinations
+
 if __name__ == '__main__':
     try:
-        print(get_color_feedback('llama', 'allot')) #* YGBBB [FAIL] should be YGYBB
+        color_combinations = get_color_dict()
+        for key in color_combinations:
+            print(f'{key} ==> {color_combinations[key]}')
+        print(len(color_combinations))
     except ValueError as e:
         print(e)

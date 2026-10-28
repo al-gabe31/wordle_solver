@@ -1,5 +1,35 @@
 
 
+def bitwise_and(input_bits:list[int], compare_bits:list[int]) -> list[int]:
+    #! check that both have the same length
+    if len(input_bits) != len(compare_bits):
+        raise ValueError(f'ERROR - both input_bits [{len(input_bits)}] and compare_bits [{len(compare_bits)}] need to have the same length')
+
+    output_bits:list[int] = []
+
+    for index in range(len(input_bits)):
+        if input_bits[index] == 1 and input_bits[index] == compare_bits[index]:
+            output_bits.append(1)
+        else:
+            output_bits.append(0)
+
+    return output_bits
+
+def bitwise_xor(input_bits:list[int], compare_bits:list[int]) -> list[int]:
+    #! check that both have the same length
+    if len(input_bits) != len(compare_bits):
+        raise ValueError(f'ERROR - both input_bits [{len(input_bits)}] and compare_bits [{len(compare_bits)}] need to have the same length')
+
+    output_bits:list[int] = []
+
+    for index in range(len(input_bits)):
+        if (input_bits[index] == 1 and compare_bits[index] == 0) or (input_bits[index] == 0 and compare_bits[index] == 1):
+            output_bits.append(1)
+        else:
+            output_bits.append(0)
+
+    return output_bits
+
 def get_color_feedback(input_word:str, compare_word:str) -> str:
     """
     Takes in 2 inputs: input_word and compare word, and outputs the 5 color pattern

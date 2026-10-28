@@ -30,6 +30,33 @@ def bitwise_xor(input_bits:list[int], compare_bits:list[int]) -> list[int]:
 
     return output_bits
 
+def letter_bits(input_word:str, target_letter:str) -> list[int]:
+    #! validate inputs
+    if input_word is None:
+        raise ValueError(f'ERROR - input_word cannot be None')
+    if target_letter is None:
+        raise ValueError(f'ERORR - target_letter cannot be None')
+    if not input_word.isalpha():
+        raise ValueError(f'ERROR - input_word [{input_word}] should only contain letters')
+    if len(target_letter) != 1:
+        raise ValueError(f'ERORR - target_letter [{target_letter}] must have a length of 1')
+    if not target_letter.isalpha():
+        raise ValueError(f'ERROR - target latter must be a letter')
+
+    #* normalizing inputs
+    input_word = input_word.upper()
+    target_letter = target_letter.upper()
+
+    output_bits:list[int] = []
+
+    for letter in input_word:
+        if letter == target_letter:
+            output_bits.append(1)
+        else:
+            output_bits.append(0)
+
+    return output_bits
+
 def get_color_feedback(input_word:str, compare_word:str) -> str:
     """
     Takes in 2 inputs: input_word and compare word, and outputs the 5 color pattern
@@ -62,7 +89,7 @@ def get_color_feedback(input_word:str, compare_word:str) -> str:
 
 
     #* algorithm to determine color feedback
-    color_feedback = ['X' for i in range(5)]
+    color_feedback = ['B' for i in range(5)]
     input_dict = {}
     compare_dict = {}
 
